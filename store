@@ -1,0 +1,3 @@
+# Directorio Store
+
+Este directorio contendrá la implementación de Zustand para manejar el estado global del juego.
