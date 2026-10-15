@@ -1,4 +1,5 @@
 import { htmlEntities } from "../utils";
+import AudioController from "../../utils/AudioController";
 
 class Messages {
     constructor(user, engine, inits, pkg, config, game, react) {
@@ -475,7 +476,7 @@ class Messages {
         const idSound = this.pkg.getByte();
 
         if (idSound !== 0) {
-            //spellSound(idSound);
+            AudioController.playSfxById(idSound);
         }
     };
 

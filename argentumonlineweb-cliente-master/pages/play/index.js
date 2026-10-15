@@ -11,7 +11,9 @@ import { fetchUrl, routerPush } from "../../config/utils";
 
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment } from "@fortawesome/free-solid-svg-icons";
+import { faComment, faVolumeUp, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
+
+import AudioController from "../../utils/AudioController";
 
 class Home extends React.Component {
     static async getInitialProps({ req }) {}
@@ -44,6 +46,7 @@ class Home extends React.Component {
             showConsole: true,
             messagesConsole: [],
             crosshair: false,
+            muted: AudioController.isMuted,
             nameMap: "",
             showModalReconnect: false,
             showInputText: false,
@@ -439,6 +442,12 @@ class Home extends React.Component {
         this.setState({
             showConsole: !showConsole
         });
+    };
+
+    toggleMute = () => {
+        const muted = AudioController.toggleMute();
+
+        this.setState({ muted });
     };
 
     selectItem = i => {
@@ -1451,6 +1460,23 @@ class Home extends React.Component {
                                         onClick={this.openConsole}
                                     >
                                         <FontAwesomeIcon icon={faComment} />
+                                    </div>
+                                    <div
+                                        className={style.muteButton}
+                                        title={
+                                            this.state.muted
+                                                ? "Activar sonido"
+                                                : "Silenciar"
+                                        }
+                                        onClick={this.toggleMute}
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={
+                                                this.state.muted
+                                                    ? faVolumeMute
+                                                    : faVolumeUp
+                                            }
+                                        />
                                     </div>
                                 </div>
 

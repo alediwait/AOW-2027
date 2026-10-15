@@ -754,6 +754,21 @@
     font-size: 16px;
 }
 
+.outer .middle .content .content_left .muteButton {
+    z-index: 7;
+    position: absolute;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    top: 508px;
+    left: 468px;
+    cursor: pointer;
+}
+
+.outer .middle .content .content_left .muteButton svg {
+    padding: 10px;
+    font-size: 16px;
+}
+
 .outer .middle .content .content_left .macros {
     width: 580px;
     height: 91px;

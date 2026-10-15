@@ -1,3 +1,5 @@
+import AudioController from "../utils/AudioController";
+
 class Engine {
     constructor(inits, user, pkg, config, game, refCanvas, react) {
         this.inits = inits;
@@ -329,6 +331,8 @@ class Engine {
 
         if (valido) {
             this.config.timeHitStart = +Date.now();
+
+            AudioController.playSfx("swing.mp3");
 
             this.pkg.setPackageID(this.pkg.serverPacketID.attackMele);
             this.config.ws.send(this.pkg.dataSend());

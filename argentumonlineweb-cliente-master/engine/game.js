@@ -1,3 +1,5 @@
+import AudioController from "../utils/AudioController";
+
 class Game {
     constructor(inits, user, pkg, config, react) {
         this.inits = inits;
@@ -24,6 +26,15 @@ class Game {
                     this.config.intervalItem
                 ) {
                     this.config.timeItemStart = +Date.now();
+
+                    // Sonido local al consumir (el servidor no envía SFX aquí)
+                    if (
+                        objItem.objType === this.config.objType.pociones ||
+                        objItem.objType === this.config.objType.bebidas ||
+                        objItem.objType === this.config.objType.comida
+                    ) {
+                        AudioController.playSfx("beber.mp3");
+                    }
 
                     this.pkg.setPackageID(this.pkg.serverPacketID.useItem);
                     this.pkg.writeInt(idPos);

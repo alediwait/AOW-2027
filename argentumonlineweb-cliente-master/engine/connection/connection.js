@@ -1,3 +1,5 @@
+import AudioController from "../../utils/AudioController";
+
 class Connection {
     constructor(messages, pkg, game, engine, user, config, react) {
         this.messages = messages;
@@ -31,6 +33,12 @@ class Connection {
             console.log("Conecto Web Socket");
             this.game.connectCharacter();
 
+            // Música de fondo: arranca tras el gesto del usuario que
+            // abrió el juego (o queda pendiente al primer click/tecla)
+            AudioController.unlock();
+            AudioController.setVolume(this.config.volume || 0.5);
+            AudioController.startMusic();
+
             setInterval(() => {
                 if (this.user.id) {
                     this.config.pingStart = +Date.now();
@@ -42,6 +50,8 @@ class Connection {
         };
 
         this.config.ws.onclose = () => {
+            AudioController.stopMusic();
+
             this.engine.deleteAllPersonajes();
             this.config.usersOnline = 0;
             this.config.dialogs = {};
