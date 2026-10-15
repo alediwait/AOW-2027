@@ -2,6 +2,7 @@ import React from "react";
 import useGameStore from "../../store";
 
 import inits from "../../engine/inits";
+import style from "./style.module.css";
 
 import _ from "lodash";
 
@@ -13,7 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 
 class Home extends React.Component {
-    static async getInitialProps({ reduxStore, req }) {}
+    static async getInitialProps({ req }) {}
 
     constructor(props) {
         super(props);
@@ -1259,6 +1260,7 @@ class Home extends React.Component {
                     <input
                         type="text"
                         onKeyUp={this.handleKeyMacro}
+                        onChange={() => {}}
                         className={style.keyMacro}
                         value={keyMacro.keyChar}
                     />

@@ -1,15 +1,17 @@
 import React from "react";
-import { connect } from "react-redux";
+import useGameStore from "../../store";
 
 import MainContainer from "../../components/mainContainer/index";
+import style from "./style.module.css";
+import withGameStore from "../../components/withGameStore";
 
 import { fetchUrl, routerPush } from "../../config/utils";
-import useGameStore from "../../store";
+
 
 
 class Register extends React.Component {
-    static async getInitialProps({ reduxStore, req, res }) {
-        const account = reduxStore.getState().account;
+    static async getInitialProps({ req, res }) {
+        const account = useGameStore.getState().account || {};
 
         if (account.accountId) {
             if (req) {
@@ -49,7 +51,6 @@ class Register extends React.Component {
 
     handleSave = async () => {
         const { name, password, repassword, email } = this.state;
-        const { dispatch } = this.props;
 
         if (!name || !password || !repassword || !email) {
             return alert("Faltan campos por completar.");
@@ -84,7 +85,7 @@ class Register extends React.Component {
             return alert(result.message);
         }
 
-        dispatch(setAccount(result));
+        useGameStore.getState().setAccount(result);
 
         routerPush("/");
     };
@@ -159,9 +160,4 @@ class Register extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    const { account } = state;
-    return { account };
-}
-
-export default Register;
+export default withGameStore(Register);

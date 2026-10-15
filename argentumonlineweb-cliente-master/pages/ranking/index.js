@@ -2,15 +2,17 @@ import React from "react";
 import useGameStore from "../../store";
 
 import MainContainer from "../../components/mainContainer/index";
+import style from "./style.module.css";
 
 import inits from "../../engine/inits";
 
 import { fetchUrl } from "../../config/utils";
 import { nameClases } from "../../config/config";
+import withGameStore from "../../components/withGameStore";
 
 
 class Home extends React.Component {
-    static async getInitialProps({ reduxStore, req }) {
+    static async getInitialProps({ req }) {
         const result = await fetchUrl("/ranking/general");
 
         const userAgent = req ? req.headers["user-agent"] : navigator.userAgent;
@@ -218,9 +220,4 @@ class Home extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    const { initsLoaded } = state;
-    return { initsLoaded };
-}
-
-export default Home;
+export default withGameStore(Home);

@@ -1,8 +1,9 @@
 import React from "react";
-import style from "./style.module.scss";
+import style from "./style.module.css";
 
 import { fetchUrl } from "../../config/utils";
 import useGameStore from "../../store";
+import withGameStore from "../withGameStore";
 
 import CreateLink from "../createLink/index";
 
@@ -28,7 +29,6 @@ class Login extends React.Component {
     };
 
     handleLogin = async () => {
-        const { dispatch } = this.props;
         const { name, password } = this.state;
 
         if (!name || !password) return;
@@ -51,13 +51,11 @@ class Login extends React.Component {
             return alert(result.message);
         }
 
-        dispatch(setAccount(result));
+        useGameStore.getState().setAccount(result);
     };
 
     handleLogout = () => {
-        const { dispatch } = this.props;
-
-        dispatch(setAccount({}));
+        useGameStore.getState().setAccount({});
 
         fetchUrl("/logout", {
             method: "POST",
@@ -83,7 +81,7 @@ class Login extends React.Component {
                     </p>
                 </div>
 
-                {account.accountId ? (
+                {account?.accountId ? (
                     <div className={style.login} style={{ height: "150px" }}>
                         <div className={style.avatar}>
                             <img src="/static/imgs/logo-aoweb.png" alt="" />
@@ -149,9 +147,4 @@ class Login extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    const { account } = state;
-    return { account };
-}
-
-export default Login;
+export default withGameStore(Login);

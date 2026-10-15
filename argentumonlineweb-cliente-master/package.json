@@ -45,9 +45,6 @@
     "devDependencies": {
         "caniuse-lite": "^1.0.30001816",
         "cross-env": "^7.0.3",
-        "node-sass": "^6.0.1",
-        "nodemon": "^1.19.4",
-        "sass": "^1.32.12",
-        "webpack": "^5.111.1"
+        "nodemon": "^1.19.4"
     }
 }

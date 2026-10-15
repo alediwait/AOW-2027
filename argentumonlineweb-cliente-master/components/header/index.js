@@ -1,6 +1,7 @@
 import React from "react";
 import useGameStore from "../../store";
-
+import withGameStore from "../withGameStore";
+import style from "./style.module.css";
 
 
 import { fetchUrl, routerPush } from "../../config/utils";
@@ -34,9 +35,9 @@ class Header extends React.Component {
 
     async componentDidMount() {
         const { loadCharacters } = this.state;
-        const { dispatch, account } = this.props;
+        const { account } = this.props;
 
-        if (account.accountId && !loadCharacters) {
+        if (account && account.accountId && !loadCharacters) {
             this.setState({
                 loadCharacters: true
             });
@@ -49,7 +50,7 @@ class Header extends React.Component {
 
         await inits.initialize();
 
-        dispatch(setInitLoaded(true));
+        useGameStore.getState().setInitLoaded(true);
     }
 
     clearCanvas = () => {
@@ -196,7 +197,7 @@ class Header extends React.Component {
                     </CreateLink>
                 </div>
 
-                <nav>
+                <nav className={style.nav}>
                     <ul>
                         <CreateLink href="/">
                             <a>
@@ -271,9 +272,4 @@ class Header extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    const { account } = state;
-    return { account };
-}
-
-export default Header;
+export default withGameStore(Header);

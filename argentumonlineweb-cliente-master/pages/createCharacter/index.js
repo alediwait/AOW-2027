@@ -2,11 +2,13 @@ import React from "react";
 import useGameStore from "../../store";
 
 import MainContainer from "../../components/mainContainer/index";
+import style from "./style.module.css";
 
 import inits from "../../engine/inits";
 import RenderCharacters from "../../engine/renderCharacters";
 
 import { fetchUrl, routerPush } from "../../config/utils";
+import withGameStore from "../../components/withGameStore";
 import {
     clases,
     razas,
@@ -21,7 +23,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 class CreateCharacter extends React.Component {
-    static async getInitialProps({ reduxStore, req, res }) {
+    static async getInitialProps({ req, res }) {
         const userAgent = req ? req.headers["user-agent"] : navigator.userAgent;
 
         return { userAgent };
@@ -31,6 +33,7 @@ class CreateCharacter extends React.Component {
         super(props);
 
         this.state = {
+            name: "",
             idClaseSelected: 1,
             idRazaSelected: 1,
             idGeneroSelected: 1,
@@ -50,6 +53,41 @@ class CreateCharacter extends React.Component {
 
         this.canvas = {};
     }
+
+    handleInput = e => {
+        this.setState({ name: e.target.value });
+    };
+
+    handleCreate = async () => {
+        const { name, idClaseSelected, idRazaSelected, idGeneroSelected, idHeadSelected } = this.state;
+
+        if (!name || !name.trim()) {
+            return alert("Ingresá un nombre para tu personaje.");
+        }
+
+        const body = {
+            name: name.trim(),
+            idClase: idClaseSelected,
+            idRaza: idRazaSelected,
+            idGenero: idGeneroSelected,
+            idHead: idHeadSelected
+        };
+
+        const result = await fetchUrl("/character", {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include"
+        });
+
+        if (!result || result.error) {
+            return alert((result && result.message) || "No se pudo crear el personaje.");
+        }
+
+        routerPush("/");
+    };
 
     componentDidMount() {
         const { initsLoaded } = this.props;
@@ -75,35 +113,29 @@ class CreateCharacter extends React.Component {
         }
     };
 
+    // Rangos de cabezas [primera, última] por "raza-genero".
+    // Verificados contra public/static/init/heads.json (todos contiguos y válidos).
+    getHeadRange = (idRaza, idGenero) => {
+        const ranges = {
+            "1-1": [1, 40], "1-2": [71, 89],
+            "2-1": [101, 122], "2-2": [171, 188],
+            "3-1": [201, 221], "3-2": [271, 288],
+            "4-1": [301, 319], "4-2": [371, 385],
+            "5-1": [401, 416], "5-2": [471, 486]
+        };
+
+        return ranges[`${idRaza}-${idGenero}`] || [1, 40];
+    };
+
+    firstHeadOf = (idRaza, idGenero) => this.getHeadRange(idRaza, idGenero)[0];
+
     prevHead = async () => {
-        let { idRazaSelected, idHeadSelected, character } = this.state;
+        let { idRazaSelected, idGeneroSelected, idHeadSelected, character } = this.state;
 
-        const humanoHombreFirstHead = 1,
-            elfoHombreFirstHead = 101,
-            elfoDHombreFirstHead = 201,
-            enanoHombreFirstHead = 301,
-            gnomoHombreFirstHead = 401;
+        const [first] = this.getHeadRange(idRazaSelected, idGeneroSelected);
 
-        if (idRazaSelected == razas.humano) {
-            if (idHeadSelected > humanoHombreFirstHead) {
-                idHeadSelected--;
-            }
-        } else if (idRazaSelected == razas.elfo) {
-            if (idHeadSelected > elfoHombreFirstHead) {
-                idHeadSelected--;
-            }
-        } else if (idRazaSelected == razas.elfoDrow) {
-            if (idHeadSelected > elfoDHombreFirstHead) {
-                idHeadSelected--;
-            }
-        } else if (idRazaSelected == razas.enano) {
-            if (idHeadSelected > enanoHombreFirstHead) {
-                idHeadSelected--;
-            }
-        } else if (idRazaSelected == razas.gnomo) {
-            if (idHeadSelected > gnomoHombreFirstHead) {
-                idHeadSelected--;
-            }
+        if (idHeadSelected > first) {
+            idHeadSelected--;
         }
 
         character.idHead = idHeadSelected;
@@ -117,34 +149,12 @@ class CreateCharacter extends React.Component {
     };
 
     nextHead = async () => {
-        let { idRazaSelected, idHeadSelected, character } = this.state;
+        let { idRazaSelected, idGeneroSelected, idHeadSelected, character } = this.state;
 
-        const humanoHombreLastHead = 40,
-            elfoHombreLastHead = 122,
-            elfoDHombreLastHead = 221,
-            enanoHombreLastHead = 319,
-            gnomoHombreLastHead = 416;
+        const [, last] = this.getHeadRange(idRazaSelected, idGeneroSelected);
 
-        if (idRazaSelected == razas.humano) {
-            if (idHeadSelected < humanoHombreLastHead) {
-                idHeadSelected++;
-            }
-        } else if (idRazaSelected == razas.elfo) {
-            if (idHeadSelected < elfoHombreLastHead) {
-                idHeadSelected++;
-            }
-        } else if (idRazaSelected == razas.elfoDrow) {
-            if (idHeadSelected < elfoDHombreLastHead) {
-                idHeadSelected++;
-            }
-        } else if (idRazaSelected == razas.enano) {
-            if (idHeadSelected < enanoHombreLastHead) {
-                idHeadSelected++;
-            }
-        } else if (idRazaSelected == razas.gnomo) {
-            if (idHeadSelected < gnomoHombreLastHead) {
-                idHeadSelected++;
-            }
+        if (idHeadSelected < last) {
+            idHeadSelected++;
         }
 
         character.idHead = idHeadSelected;
@@ -208,13 +218,7 @@ class CreateCharacter extends React.Component {
     };
 
     prevRaza = async () => {
-        let { idRazaSelected, idHeadSelected, character } = this.state;
-
-        const humanoHombreFirstHead = 1,
-            elfoHombreFirstHead = 101,
-            elfoDHombreFirstHead = 201,
-            enanoHombreFirstHead = 301,
-            gnomoHombreFirstHead = 401;
+        let { idRazaSelected, idGeneroSelected, idHeadSelected, character } = this.state;
 
         if (idRazaSelected > 1) {
             idRazaSelected--;
@@ -231,17 +235,7 @@ class CreateCharacter extends React.Component {
                 character.idBody = 300;
             }
 
-            if (idRazaSelected == razas.humano) {
-                idHeadSelected = humanoHombreFirstHead;
-            } else if (idRazaSelected == razas.elfo) {
-                idHeadSelected = elfoHombreFirstHead;
-            } else if (idRazaSelected == razas.elfoDrow) {
-                idHeadSelected = elfoDHombreFirstHead;
-            } else if (idRazaSelected == razas.enano) {
-                idHeadSelected = enanoHombreFirstHead;
-            } else if (idRazaSelected == razas.gnomo) {
-                idHeadSelected = gnomoHombreFirstHead;
-            }
+            idHeadSelected = this.firstHeadOf(idRazaSelected, idGeneroSelected);
 
             character.idHead = idHeadSelected;
 
@@ -257,13 +251,7 @@ class CreateCharacter extends React.Component {
     };
 
     nextRaza = async () => {
-        let { idRazaSelected, idHeadSelected, character } = this.state;
-
-        const humanoHombreFirstHead = 1,
-            elfoHombreFirstHead = 101,
-            elfoDHombreFirstHead = 201,
-            enanoHombreFirstHead = 301,
-            gnomoHombreFirstHead = 401;
+        let { idRazaSelected, idGeneroSelected, idHeadSelected, character } = this.state;
 
         if (idRazaSelected < 5) {
             idRazaSelected++;
@@ -280,17 +268,7 @@ class CreateCharacter extends React.Component {
                 character.idBody = 300;
             }
 
-            if (idRazaSelected == razas.humano) {
-                idHeadSelected = humanoHombreFirstHead;
-            } else if (idRazaSelected == razas.elfo) {
-                idHeadSelected = elfoHombreFirstHead;
-            } else if (idRazaSelected == razas.elfoDrow) {
-                idHeadSelected = elfoDHombreFirstHead;
-            } else if (idRazaSelected == razas.enano) {
-                idHeadSelected = enanoHombreFirstHead;
-            } else if (idRazaSelected == razas.gnomo) {
-                idHeadSelected = gnomoHombreFirstHead;
-            }
+            idHeadSelected = this.firstHeadOf(idRazaSelected, idGeneroSelected);
 
             character.idHead = idHeadSelected;
 
@@ -306,15 +284,19 @@ class CreateCharacter extends React.Component {
     };
 
     prevGenero = async () => {
-        let { idGeneroSelected, character } = this.state;
+        let { idRazaSelected, idGeneroSelected, idHeadSelected, character } = this.state;
 
         if (idGeneroSelected > 1) {
             idGeneroSelected--;
 
             character.idGenero = idGeneroSelected;
 
+            idHeadSelected = this.firstHeadOf(idRazaSelected, idGeneroSelected);
+            character.idHead = idHeadSelected;
+
             await this.setState({
                 character: character,
+                idHeadSelected: idHeadSelected,
                 idGeneroSelected: idGeneroSelected,
                 nameGenero: nameGeneros[idGeneroSelected]
             });
@@ -324,15 +306,19 @@ class CreateCharacter extends React.Component {
     };
 
     nextGenero = async () => {
-        let { idGeneroSelected, character } = this.state;
+        let { idRazaSelected, idGeneroSelected, idHeadSelected, character } = this.state;
 
         if (idGeneroSelected < 2) {
             idGeneroSelected++;
 
             character.idGenero = idGeneroSelected;
 
+            idHeadSelected = this.firstHeadOf(idRazaSelected, idGeneroSelected);
+            character.idHead = idHeadSelected;
+
             await this.setState({
                 character: character,
+                idHeadSelected: idHeadSelected,
                 idGeneroSelected: idGeneroSelected,
                 nameGenero: nameGeneros[idGeneroSelected]
             });
@@ -366,6 +352,8 @@ class CreateCharacter extends React.Component {
                                         type="text"
                                         className={style.input_text}
                                         id="name"
+                                        value={this.state.name}
+                                        onChange={this.handleInput}
                                     />
                                     <div className={style.canvasCharacter}>
                                         <FontAwesomeIcon
@@ -406,8 +394,8 @@ class CreateCharacter extends React.Component {
                                             type="text"
                                             className={style.input_text}
                                             id="clase"
-                                            disabled=""
-                                            defaultValue={nameClase}
+                                            value={nameClase}
+                                            readOnly
                                         />
                                         <FontAwesomeIcon
                                             icon={faAngleRight}
@@ -433,8 +421,8 @@ class CreateCharacter extends React.Component {
                                             type="text"
                                             className={style.input_text}
                                             id="raza"
-                                            defaultValue={nameRaza}
-                                            disabled=""
+                                            value={nameRaza}
+                                            readOnly
                                         />
                                         <FontAwesomeIcon
                                             icon={faAngleRight}
@@ -460,8 +448,8 @@ class CreateCharacter extends React.Component {
                                             type="text"
                                             className={style.input_text}
                                             id="genero"
-                                            defaultValue={nameGenero}
-                                            disabled=""
+                                            value={nameGenero}
+                                            readOnly
                                         />
                                         <FontAwesomeIcon
                                             icon={faAngleRight}
@@ -484,14 +472,14 @@ class CreateCharacter extends React.Component {
                                             type="text"
                                             className={style.input_text}
                                             id="ciudad"
-                                            defaultValue="Ullathorpe"
-                                            disabled=""
+                                            value="Ullathorpe"
+                                            readOnly
                                         />
                                     </div>
                                 </div>
                             </div>
 
-                            <button>Crear personaje</button>
+                            <button onClick={this.handleCreate}>Crear personaje</button>
                         </div>
                     </div>
                 </div>
@@ -500,9 +488,4 @@ class CreateCharacter extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    const { initsLoaded, account } = state;
-    return { initsLoaded, account };
-}
-
-export default CreateCharacter;
+export default withGameStore(CreateCharacter);

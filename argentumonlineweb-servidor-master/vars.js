@@ -1,7 +1,7 @@
 var vars = new Vars();
 
 function Vars() {
-    this.tokenAuth = "Bearer token";
+    this.tokenAuth = process.env.TOKEN_AUTH || "Bearer token";
 
     this.serverReady = false;
 

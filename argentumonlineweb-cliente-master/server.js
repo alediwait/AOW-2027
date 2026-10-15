@@ -3,6 +3,12 @@ require("dotenv").config();
 const express = require("express");
 const next = require("next");
 
+// Un rechazo no manejado (p.ej. DB caída a mitad de un request) no debe
+// derribar todo el proceso en desarrollo.
+process.on("unhandledRejection", err => {
+    console.error("[unhandledRejection]", (err && err.message) || err);
+});
+
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -25,11 +31,22 @@ const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000")
     .split(",")
     .map(origin => origin.trim());
 
-// Conexión a MongoDB usando variable de entorno
+// Conexión a MongoDB usando variable de entorno.
+// No derribar el proceso si Mongo está caído: los endpoints fallan
+// por request pero el servidor sigue arriba para reintentar.
 const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/aoweb";
-mongoose.connect(mongoUri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+mongoose
+    .connect(mongoUri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false
+    })
+    .catch(err => {
+        console.error(`[MongoDB] No se pudo conectar a ${mongoUri}:`, err.message);
+    });
+
+mongoose.connection.on("error", err => {
+    console.error("[MongoDB] Error de conexión:", err.message);
 });
 
 const robotsOptions = {

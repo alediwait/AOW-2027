@@ -76,6 +76,12 @@ class CharacterService {
 
         return query;
     }
+
+    findCharacterByName(name) {
+        const query = Characters.findOne({ name: name }).exec();
+
+        return query;
+    }
 }
 
 module.exports = CharacterService;

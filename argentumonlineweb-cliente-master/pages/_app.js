@@ -4,7 +4,8 @@ import withZustandStore from "../lib/with-zustand-store";
 import Head from "../components/Head";
 
 // Importaciones de estilos globales
-
+import "../styles/style.css";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 
 import { config as configFA } from "@fortawesome/fontawesome-svg-core";
 configFA.autoAddCss = false;

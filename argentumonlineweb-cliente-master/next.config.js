@@ -1,9 +1,15 @@
-const path = require('path');
-
 module.exports = {
   reactStrictMode: false,
-  sassOptions: {
-    includePaths: [path.join(__dirname, 'styles')],
-    implementation: require('sass'),
+  publicRuntimeConfig: {
+    // 'dev' | 'production' — ver config.js (api())
+    backend_url: process.env.BACKEND_URL || 'dev'
   },
+  webpack: (config, { dev, isServer }) => {
+    if (dev && !isServer) {
+      config.plugins = config.plugins.filter(plugin => {
+        return plugin.constructor.name !== 'ReactRefreshWebpackPlugin';
+      });
+    }
+    return config;
+  }
 };

@@ -207,6 +207,10 @@ function Login() {
                 vars.clients[ws.id] = ws;
 
                 if (
+                    vars.mapData[vars.personajes[ws.id].map] &&
+                    vars.mapData[vars.personajes[ws.id].map][
+                        vars.personajes[ws.id].pos.y
+                    ] &&
                     vars.mapData[vars.personajes[ws.id].map][
                         vars.personajes[ws.id].pos.y
                     ][vars.personajes[ws.id].pos.x].id
@@ -384,6 +388,10 @@ function Login() {
         vars.clients[ws.id] = ws;
 
         if (
+            vars.mapData[vars.personajes[ws.id].map] &&
+            vars.mapData[vars.personajes[ws.id].map][
+                vars.personajes[ws.id].pos.y
+            ] &&
             vars.mapData[vars.personajes[ws.id].map][
                 vars.personajes[ws.id].pos.y
             ][vars.personajes[ws.id].pos.x].id

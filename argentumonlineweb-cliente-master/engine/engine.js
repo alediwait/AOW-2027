@@ -129,7 +129,13 @@ class Engine {
     };
 
     clickCanvas = pos => {
-        let tileSelected = this.inits.mapData[this.config.mapNumber][pos.y][
+        const mapData = this.inits.mapData[this.config.mapNumber];
+
+        if (!mapData || !mapData[pos.y]) {
+            return;
+        }
+
+        let tileSelected = mapData[pos.y][
             pos.x
         ];
 

@@ -1,14 +1,13 @@
 import React from "react";
-import useGameStore from "../../store";
 
 import CreateLink from "../../components/createLink/index";
 import MainContainer from "../../components/mainContainer/index";
 
 import MobileDetect from "mobile-detect";
 
-import style from "./style.scss";
+import style from "./style.module.css";
 class Home extends React.Component {
-    static async getInitialProps({ reduxStore, req }) {
+    static async getInitialProps({ req }) {
         const userAgent = req ? req.headers["user-agent"] : navigator.userAgent;
 
         return { userAgent };

@@ -1,0 +1,288 @@
+.contentLeft {
+    margin-top: 20px;
+    width: 598px;
+    background-color: #0b0f13;
+    float: left;
+    padding: 1px;
+    position: relative;
+    bottom: 70px;
+}
+
+.contentLeft .shadow {
+    box-shadow: inset 0 0 10px #555657;
+    float: left;
+    width: 578px;
+    padding: 10px;
+}
+
+.contentLeft .shadow h4 {
+    color: #ff9000;
+    text-align: center;
+    font-size: 20px;
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.tabs {
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.tabs .tab {
+    background-color: #11171d;
+    float: left;
+    border: 1px solid #1a242d;
+    border-bottom: 0;
+    color: #496076;
+    margin-right: 3px;
+    cursor: pointer;
+}
+
+.tabs .tab span {
+    float: left;
+    font-size: 15px;
+    padding: 5px 20px;
+}
+
+.tabs .tabActive {
+    font-weight: normal;
+}
+
+.tabs .tabActive .line {
+    width: 100%;
+    float: left;
+    position: relative;
+    top: 1px;
+    border-bottom: 1px solid #11171d;
+}
+
+.contentBox {
+    float: left;
+    width: 576px;
+    background-color: #11171d;
+    border: 1px solid #1a242d;
+    padding-bottom: 15px;
+}
+
+.contentBoxRanking {
+    padding: 10px;
+    width: 556px !important;
+}
+
+.contentBoxRanking .tableHeader {
+    background: #0d1317;
+    color: #ff9000;
+    float: left;
+    text-align: center;
+    border: 1px solid #1a242d;
+}
+
+.contentBoxRanking .tableHeader .rank {
+    width: 120px;
+    float: left;
+    padding: 10px 0;
+    border-right: 1px solid #1a242d;
+}
+
+.contentBoxRanking .tableHeader .name {
+    width: 312px;
+    float: left;
+    padding: 10px 0;
+}
+
+.contentBoxRanking .tableHeader .kills {
+    width: 120px;
+    float: left;
+    padding: 10px 0;
+    border-left: 1px solid #1a242d;
+}
+
+.contentBoxRanking .tableHeader .rankGeneral {
+    width: 90px;
+}
+
+.contentBoxRanking .tableHeader .nameGeneral {
+    width: 230px;
+}
+
+.contentBoxRanking .tableHeader .levelGeneral {
+    width: 50px;
+    float: left;
+    padding: 10px 0;
+    border-left: 1px solid #1a242d;
+}
+
+.contentBoxRanking .tableHeader .killsGeneral {
+    width: 90px;
+}
+
+.contentBoxRanking .tableHeader .claseGeneral {
+    width: 90px;
+    float: left;
+    padding: 10px 0;
+    border-left: 1px solid #1a242d;
+}
+
+.contentBoxRanking .row {
+    background: #111a1d;
+    color: #ff9000;
+    float: left;
+    text-align: center;
+    border: 1px solid #1a242d;
+    border-top: 0;
+}
+
+.contentBoxRanking .row .rank {
+    width: 120px;
+    float: left;
+    padding: 10px 0;
+    border-right: 1px solid #1a242d;
+}
+
+.contentBoxRanking .row .rank span {
+    position: relative;
+    top: 21.5px;
+}
+
+.contentBoxRanking .row .rankGeneral {
+    width: 90px;
+}
+
+.contentBoxRanking .row .name {
+    width: 312px;
+    float: left;
+    padding: 10px 0;
+}
+
+.contentBoxRanking .row .name a span {
+    position: relative;
+    top: 21.5px;
+}
+
+.contentBoxRanking .row .name .character {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #1a242d;
+    float: left;
+    margin-top: 9px;
+    margin-left: 9px;
+    margin-bottom: 9px;
+    box-shadow: 0px 0px 1px #575757;
+    cursor: pointer;
+}
+
+.contentBoxRanking .row .name .character .bodyNakedImgCharacter {
+    background: url("/statics/assets/bodies/bodyNaked.png");
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 16px;
+    position: absolute;
+    margin-top: 16px;
+    margin-left: 8px;
+    z-index: 10;
+}
+
+.contentBoxRanking .row .name .character .headImgCharacter {
+    background-repeat: no-repeat;
+    width: 15px;
+    height: 30px;
+    position: absolute;
+    z-index: 12;
+    margin-top: 7px;
+    margin-left: 12.4px;
+}
+
+.contentBoxRanking .row .name .character .helmetImgCharacter {
+    background-repeat: no-repeat;
+    width: 15px;
+    height: 30px;
+    position: absolute;
+    z-index: 12;
+    margin-top: 7px;
+    margin-left: 12.4px;
+}
+
+.contentBoxRanking .row .name .character .bodyImgCharacter {
+    position: absolute;
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 16px;
+    margin-top: 16px;
+    margin-left: 8px;
+    z-index: 11;
+}
+
+.contentBoxRanking .row .name a {
+    color: #496076;
+}
+
+.contentBoxRanking .row .nameGeneral {
+    width: 230px;
+}
+
+.contentBoxRanking .row .nameGeneral a {
+    text-decoration: none;
+}
+
+.contentBoxRanking .row .levelGeneral {
+    width: 50px;
+    float: left;
+    padding: 10px 0;
+    border-left: 1px solid #1a242d;
+}
+
+.contentBoxRanking .row .levelGeneral span {
+    position: relative;
+    top: 21.5px;
+}
+
+.contentBoxRanking .row .kills {
+    width: 120px;
+    float: left;
+    padding: 10px 0;
+    border-left: 1px solid #1a242d;
+}
+
+.contentBoxRanking .row .kills span {
+    position: relative;
+    top: 21.5px;
+}
+
+.contentBoxRanking .row .killsGeneral {
+    width: 90px;
+}
+
+.contentBoxRanking .row .claseGeneral {
+    width: 90px;
+    float: left;
+    padding: 10px 0;
+    border-left: 1px solid #1a242d;
+}
+
+.contentBoxRanking .row .claseGeneral span {
+    position: relative;
+    top: 21.5px;
+}
+
+.contentBoxRanking .rowColor {
+    background: #11191d;
+}
+
+@media only screen and (max-width: 768px) {
+    .contentLeft {
+        width: 100%;
+    }
+
+    .contentLeft .shadow {
+        width: 100%;
+        box-sizing: border-box;
+        overflow: scroll;
+    }
+
+    .row .name .character {
+        position: relative;
+    }
+}

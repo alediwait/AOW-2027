@@ -33,6 +33,10 @@ module.exports = app => {
         CharacterInstance.getCharacter(req, res)
     );
 
+    app.post("/api/character", (req, res) =>
+        CharacterInstance.createCharacter(req, res)
+    );
+
     app.put("/api/character_save/:idCharacter", (req, res) =>
         CharacterInstance.saveCharacter(req, res)
     );
