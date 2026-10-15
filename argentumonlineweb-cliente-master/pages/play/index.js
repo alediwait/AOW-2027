@@ -1,5 +1,5 @@
 import React from "react";
-import { connect } from "react-redux";
+import useGameStore from "../../store";
 
 import inits from "../../engine/inits";
 
@@ -1629,4 +1629,4 @@ class Home extends React.Component {
     }
 }
 
-export default connect()(Home);
+export default Home;

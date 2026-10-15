@@ -1,5 +1,5 @@
 import React from "react";
-import { connect } from "react-redux";
+import useGameStore from "../../store";
 
 import MainContainer from "../../components/mainContainer/index";
 
@@ -505,4 +505,4 @@ function mapStateToProps(state) {
     return { initsLoaded, account };
 }
 
-export default connect(mapStateToProps)(CreateCharacter);
+export default CreateCharacter;

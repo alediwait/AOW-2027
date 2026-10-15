@@ -1,12 +1,12 @@
 import React from "react";
-import { connect } from "react-redux";
+import useGameStore from "../../store";
 
 import CreateLink from "../../components/createLink/index";
 import MainContainer from "../../components/mainContainer/index";
 
 import MobileDetect from "mobile-detect";
 
-
+import style from "./style.scss";
 class Home extends React.Component {
     static async getInitialProps({ reduxStore, req }) {
         const userAgent = req ? req.headers["user-agent"] : navigator.userAgent;
@@ -55,4 +55,4 @@ class Home extends React.Component {
     }
 }
 
-export default connect()(Home);
+export default Home;

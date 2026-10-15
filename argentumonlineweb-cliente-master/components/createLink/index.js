@@ -1,5 +1,4 @@
 import { Component } from "react";
-import { connect } from "react-redux";
 
 import Link from "next/link";
 import { buildUrl } from "../../config/utils";
@@ -17,4 +16,4 @@ class CreateLink extends Component {
     }
 }
 
-export default connect()(CreateLink);
+export default CreateLink;

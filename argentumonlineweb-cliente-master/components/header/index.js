@@ -1,10 +1,9 @@
 import React from "react";
-import { connect } from "react-redux";
+import useGameStore from "../../store";
 
 
 
 import { fetchUrl, routerPush } from "../../config/utils";
-import { setInitLoaded } from "../../store";
 
 import pvpChars from "../../config/pvpChars.json";
 import inits from "../../engine/inits";
@@ -277,4 +276,4 @@ function mapStateToProps(state) {
     return { account };
 }
 
-export default connect(mapStateToProps)(Header);
+export default Header;

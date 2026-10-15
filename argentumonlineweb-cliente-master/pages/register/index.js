@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import MainContainer from "../../components/mainContainer/index";
 
 import { fetchUrl, routerPush } from "../../config/utils";
-import { setAccount } from "../../store";
+import useGameStore from "../../store";
 
 
 class Register extends React.Component {
@@ -164,4 +164,4 @@ function mapStateToProps(state) {
     return { account };
 }
 
-export default connect(mapStateToProps)(Register);
+export default Register;

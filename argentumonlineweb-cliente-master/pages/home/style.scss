@@ -1,6 +1,6 @@
 @import "../../styles/variables.scss";
 
-a {
+:global(a) {
     color: #ff9000;
 }
 

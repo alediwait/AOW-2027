@@ -1,3 +1,9 @@
+const path = require('path');
+
 module.exports = {
-  // Configuración vacía o nativa
-}
+  reactStrictMode: false,
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'styles')],
+    implementation: require('sass'),
+  },
+};

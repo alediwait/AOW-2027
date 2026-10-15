@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=development nodemon --watch server --watch server.js server.js",
+        "dev": "cross-env NODE_ENV=development nodemon --watch server --watch server.js server.js",
         "build": "next build",
         "start": "NODE_ENV=production node server.js",
         "ci": "NODE_ENV=ci node server.js"
@@ -37,11 +37,17 @@
         "passport-local": "^1.0.0",
         "react": "^16.11.0",
         "react-dom": "^16.11.0",
+        "redux": "^4.2.1",
+        "redux-devtools-extension": "^2.13.9",
+        "redux-thunk": "^2.4.2",
         "zustand": "^4.0.0"
     },
     "devDependencies": {
-        "cross-env": "^10.1.0",
+        "caniuse-lite": "^1.0.30001816",
+        "cross-env": "^7.0.3",
+        "node-sass": "^6.0.1",
         "nodemon": "^1.19.4",
-        "sass": "^1.32.0"
+        "sass": "^1.32.12",
+        "webpack": "^5.111.1"
     }
 }

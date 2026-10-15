@@ -1,9 +1,8 @@
 import React from "react";
-import { connect } from "react-redux";
 import style from "./style.module.scss";
 
 import { fetchUrl } from "../../config/utils";
-import { setAccount } from "../../store";
+import useGameStore from "../../store";
 
 import CreateLink from "../createLink/index";
 
@@ -155,4 +154,4 @@ function mapStateToProps(state) {
     return { account };
 }
 
-export default connect(mapStateToProps)(Login);
+export default Login;
