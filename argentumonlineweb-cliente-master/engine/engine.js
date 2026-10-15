@@ -84,6 +84,15 @@ class Engine {
         this.canvas.textos = {};
         this.canvas.textos.ctx = this.refCanvas.textos.getContext("2d");
 
+        // Sin suavizado: dibujar tiles en coordenadas fraccionarias con
+        // interpolación produce costuras negras de ~1px entre tiles
+        // durante el scroll. Ver showNextFrame/charRender (offsets enteros).
+        Object.keys(this.canvas).forEach(capa => {
+            if (this.canvas[capa].ctx) {
+                this.canvas[capa].ctx.imageSmoothingEnabled = false;
+            }
+        });
+
         const loadMaps = this.inits.loadMaps();
         const loadObjs = this.inits.loadObjs();
         const loadHeads = this.inits.loadHeads();
@@ -433,14 +442,20 @@ class Engine {
                     }
                 }
 
-                this.renderBackground(this.offsetCounterX, this.offsetCounterY);
+                // Offsets enteros: con valores fraccionarios el canvas
+                // interpola los bordes de cada tile y aparecen las
+                // líneas de grilla negras solo durante el movimiento.
+                const roundOffsetX = Math.round(this.offsetCounterX);
+                const roundOffsetY = Math.round(this.offsetCounterY);
+
+                this.renderBackground(roundOffsetX, roundOffsetY);
             }
 
             this.renderScreen(
                 this.user.pos.x - this.user.addtoUserPos.x,
                 this.user.pos.y - this.user.addtoUserPos.y,
-                this.offsetCounterX,
-                this.offsetCounterY
+                Math.round(this.offsetCounterX),
+                Math.round(this.offsetCounterY)
             );
         } catch (err) {
             dumpError(err);
@@ -1069,15 +1084,15 @@ class Engine {
 
             this.drawChar(
                 personaje,
-                pixelOffsetX + personaje.moveOffsetX,
-                pixelOffsetY + personaje.moveOffsetY
+                Math.round(pixelOffsetX + personaje.moveOffsetX),
+                Math.round(pixelOffsetY + personaje.moveOffsetY)
             );
 
             if (personaje.fxId) {
                 this.drawFx(
                     personaje,
-                    pixelOffsetX + personaje.moveOffsetX,
-                    pixelOffsetY + personaje.moveOffsetY,
+                    Math.round(pixelOffsetX + personaje.moveOffsetX),
+                    Math.round(pixelOffsetY + personaje.moveOffsetY),
                     true
                 );
             }
