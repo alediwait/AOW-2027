@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const next = require("next");
 
@@ -18,16 +20,20 @@ const passport = require("passport"),
     bodyParser = require("body-parser"),
     routes = require("./server/routes");
 
-if (dev) {
-    const urlMongo = "mongodb://localhost:27017/aoweb";
-    mongoose.connect(urlMongo, { useNewUrlParser: true });
-} else {
-    const urlMongo = "";
-    mongoose.connect(urlMongo, { useNewUrlParser: true });
-}
+// Configuración de CORS segura
+const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000")
+    .split(",")
+    .map(origin => origin.trim());
+
+// Conexión a MongoDB usando variable de entorno
+const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/aoweb";
+mongoose.connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
 const robotsOptions = {
-    root: __dirname + "/static/",
+    root: __dirname + "/public/static/",
     headers: {
         "Content-Type": "text/plain; charset=UTF-8"
     }
@@ -38,10 +44,17 @@ app.prepare().then(() => {
 
     server.use(compression());
 
+    // CORS seguro - solo orígenes permitidos
     server.use(
         require("cors")({
             origin: function(origin, callback) {
-                callback(null, origin);
+                // Permitir requests sin origen (como apps móviles o curl)
+                if (!origin) return callback(null, true);
+                if (allowedOrigins.indexOf(origin) !== -1) {
+                    callback(null, true);
+                } else {
+                    callback(new Error("No permitido por CORS"));
+                }
             },
             credentials: true
         })
@@ -56,9 +69,12 @@ app.prepare().then(() => {
     server.use(
         cookieSession({
             name: "session",
-            keys: [""],
-            domain: !dev ? "argentumonlineweb.com" : "",
-            maxAge: 24 * 60 * 60 * 1000 * 7
+            keys: [process.env.SESSION_SECRET || "dev-secret-key"],
+            domain: !dev ? (process.env.COOKIE_DOMAIN || "argentumonlineweb.com") : "",
+            maxAge: 24 * 60 * 60 * 1000 * 7,
+            httpOnly: true,
+            secure: !dev,
+            sameSite: "lax"
         })
     );
 
@@ -86,5 +102,6 @@ app.prepare().then(() => {
     server.listen(port, err => {
         if (err) throw err;
         console.log(`> Ready on http://localhost:${port}`);
+        console.log(`> Environment: ${process.env.NODE_ENV || "development"}`);
     });
 });

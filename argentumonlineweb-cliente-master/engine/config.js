@@ -69,12 +69,12 @@ self.timeRangeStart = 0;
 self.usersOnline = 0;
 
 //Conections
-self.debug = true;
+self.debug = process.env.NODE_ENV !== "production";
 
 self.descClient = {};
 
-self.PROD_SERVER_ENDPOINT = "";
-self.LOCAL_SERVER_ENDPOINT = "ws://127.0.0.1:7666";
+self.PROD_SERVER_ENDPOINT = process.env.PROD_SERVER_ENDPOINT || "";
+self.LOCAL_SERVER_ENDPOINT = process.env.LOCAL_SERVER_ENDPOINT || "ws://127.0.0.1:7666";
 
 self.hechizoSelected = 0;
 self.itemSelected = 0;

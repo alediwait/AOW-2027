@@ -1,7 +1,9 @@
+require("dotenv").config();
+
 const WebSocketServer = require("ws").Server;
 
 const ws = new WebSocketServer({
-    port: 7666
+    port: process.env.PORT || 7666
 });
 
 const loadMaps = require("./loadMaps");
